@@ -81,42 +81,39 @@ public class Main extends Application{
 		window.setHeight(1080);
 		window.setTitle("Image To Draw");
 		
-		//menu bar
-		Menu menu1 = new Menu("File");
-		menuItem1 = new MenuItem("Apri                          ");
-		menuItem1.setOnAction(e -> open());
-		MenuItem menuItem2 = new MenuItem("Salva");
+		//generating the main pane
+		mainPane = new BorderPane();
+		mainPane.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
 		
-		MenuItem menuItem3 = new MenuItem("Esci");
+		//generating the menu bar
+		Menu menu1 = new Menu("File");
+		menuItem1 = new MenuItem("Open                       ");
+		menuItem1.setOnAction(e -> open());
+		
+		MenuItem menuItem2 = new MenuItem("Save");	//TODO: save function
+		MenuItem menuItem3 = new MenuItem("Exit");
 		menuItem3.setOnAction(e -> {
 			if(ConfirmBox.display("Exit", "Are yousure you want to exit?"))
 					window.close();
 		});
-		
 		menu1.getItems().addAll(menuItem1, menuItem2, new SeparatorMenuItem(), menuItem3);
+		
 		menuBar = new MenuBar();
 		menuBar.setBackground(new Background(new BackgroundFill(Color.grayRgb(190), CornerRadii.EMPTY, Insets.EMPTY)));
 		menuBar.setMinHeight(25);
-
 		menuBar.getMenus().add(menu1);
 		
 		pane = new VBox();
 		pane.getChildren().add(menuBar);
-		
-		mainPane = new BorderPane();
-		
-		mainPane.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		
+
+		//lambda used by the image viewer to add the pixels
 		c = e -> {
 			if(notDragged) {
 				if(e.getButton() == MouseButton.PRIMARY)
 					addPixel((int)e.getX(), (int)e.getY(), pxreader.getColor((int)e.getX(), (int)e.getY()));
 			}
 			notDragged = true;
-		};
-		
-		//iv.setOnMouseReleased(c);
-		
+		};		
 		
 		
 		p = new Pane();
@@ -231,16 +228,11 @@ public class Main extends Application{
 	}
 
 	private void spawnThings() {
-		
 		mainPane.setCenter(p);
 		mainPane.setBottom(bottomBox);
 		mainPane.setTop(pane);
 		mainPane.setLeft(leftBox);
-		mainPane.setRight(rightBox);
-		
-		System.out.println(window.getHeight()/p.getHeight());
-
-		
+		mainPane.setRight(rightBox);		
 	}
 
 	public static void main(String[] args) {
@@ -299,7 +291,6 @@ public class Main extends Application{
 		colLabel.setMinWidth(30);
 		colLabel.setMinHeight(30);;
 		colLabel.setBackground(new Background(new BackgroundFill(color, new CornerRadii(6), Insets.EMPTY)));
-		//nodeMatrix.add(new Node[] {new Label(d + "-" + f), colLabel, deleteLine});
 
 		dataBox.add(coord, 1, dataBoxElements);
 		dataBox.add(colLabel, 2, dataBoxElements);
